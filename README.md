@@ -26,6 +26,50 @@ The concepts are similar to other steam processing libraries. They are as follow
 - **Sink**: The output stream which can be any of *Unix file*, *Unix socket*, *Kafka topic*, *RabbitMQ queue*, and etc.
 - **Processor**: The processing action on the elements of a stream, such as `Map`, `reduce`, `filter`, `aggregate`, and etc.
 
+Architecture
+-----
+
+- Each Source, Sink, and Processor is an Actor which run concurrently.
+- It is possible that each Processor has one or more Source or Sink.
+
+
+```
++-------------------+   +-------------------+   +-------------------+
+|                   |   |                   |   |                   |
+|    File Source    |   |   Kafka Source    |   |   Rabbit Source   |
+|                   |   |                   |   |                   |
++---------+---------+   +---------+---------+   +---------+---------+
+          |                       |                       |
+          |                       |                       |
+          |     +-----------------v-------------+         |
+          |     |                               |         |
+          +----->        Map Processor          <---------+
+                |                               |
+                +-------+------------------+----+
+                        |                  |
+                        |                  |
+           +------------v------+   +-------v-----------+
+           |                   |   |                   |
+           | Kafka Source/Sink |   | File Source/Sink  |
+           |                   |   |                   |
+           +------------+------+   +-------+-----------+
+                        |                  |
+                        |                  |
+                +-------v------------------v----+
+                |                               |
+          +-----+        Reduce Processor       +--------+
+          |     |                               |        |
+          |     +-----------------+-------------+        |
+          |                       |                      |
+          |                       |                      |
++---------v---------+   +---------v---------+   +--------v----------+
+|                   |   |                   |   |                   |
+|   File Sink       |   |   Kafka Sink      |   |    Rabbit Sink    |
+|                   |   |                   |   |                   |
++-------------------+   +-------------------+   +-------------------+
+
+```
+
 How to implement a new Source
 -----
 
