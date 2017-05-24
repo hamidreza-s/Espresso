@@ -134,7 +134,7 @@ file_source_kafka_sink_map_execute_test() ->
     {ok, Processor} = espresso:new(),
     {ok, Processor} = espresso:add_source(espresso_source_file, #{path => SourcePath}, Processor),
     {ok, Processor} = espresso:add_sink(espresso_sink_kafka, SinkOpts, Processor),
-    {ok, Processor} = espresso:map(fun(X) -> X end, Processor),
+    {ok, Processor} = espresso:map(fun(X) -> <<X/binary, " ...!">> end, Processor),
 
     ok = espresso:execute(Processor),
 

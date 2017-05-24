@@ -173,11 +173,9 @@ ok = espresso:chain(Source, Processors, Sink),
 Source = {espresso_source_file, #{path => "/path/to/source/file"}},
 
 %% define kafka sink
-Sink = {espresso_sink_file, #{path => "/path/to/sink/file"}},
-SinkOpts = #{topic => SinkTopic,
-             partition => SinkPartition,
-             brokers => BrokerList},
-Sink = {espresso_source_kafka, SinkOpts},
+Sink = {espresso_sink_kafka, #{topic => <<"kafka-topic-name">>,
+                               partition => 0,
+                               brokers => [{"localhost", 9092}]}},
 
 %% define a chain of processors
 Processors = [{map, fun(X) -> ByteSize = byte_size(X), integer_to_binary(ByteSize) end},
