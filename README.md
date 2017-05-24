@@ -143,3 +143,45 @@ write(Element, _Opts, SinkPID) ->
     SinkPID ! {write, Element},
     ok.
 ```
+
+Examples
+-----
+
+The following examples are in Erlang, but apparently the API can be used in Elixir as well.
+
+- A MapReduce from file to file:
+
+```erlang
+%% define file source
+Source = {espresso_source_file, #{path => "/path/to/source/file"}},
+
+%% define file sink
+Sink = {espresso_sink_file, #{path => "/path/to/sink/file"}},
+
+%% define a chain of processors
+Processors = [{map, fun(X) -> ByteSize = byte_size(X), integer_to_binary(ByteSize) end},
+              {reduce, fun(X, Acc) -> binary_to_integer(X) + Acc end}],
+
+%% execute them on a chain of processors
+ok = espresso:chain(Source, Processors, Sink),
+```
+
+- A MapReduce from file to kafka:
+```erlang
+%% define file source
+Source = {espresso_source_file, #{path => "/path/to/source/file"}},
+
+%% define kafka sink
+Sink = {espresso_sink_file, #{path => "/path/to/sink/file"}},
+SinkOpts = #{topic => SinkTopic,
+             partition => SinkPartition,
+             brokers => BrokerList},
+Sink = {espresso_source_kafka, SinkOpts},
+
+%% define a chain of processors
+Processors = [{map, fun(X) -> ByteSize = byte_size(X), integer_to_binary(ByteSize) end},
+              {reduce, fun(X, Acc) -> binary_to_integer(X) + Acc end}],
+
+%% execute them on a chain of processors
+ok = espresso:chain(Source, Processors, Sink),
+```
