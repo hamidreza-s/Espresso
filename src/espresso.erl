@@ -112,7 +112,7 @@ file_source_file_sink_map_reduce_chain_test() ->
 			],
 			{espresso_sink_file, #{path => SinkPath}}),
 
-    timer:sleep(1000), %% @TODO: fix it!
+    timer:sleep(1000),
 
     {ok, SinkResult} = file:read_file(SinkPath),
     ExpectedResult = <<"36\n">>,
@@ -147,8 +147,6 @@ file_source_file_sink_map_reduce_execute_test() ->
 				    ProcessorMap),
     ok = espresso:execute(ProcessorMap),
 
-    timer:sleep(1000), % @TODO: fix it!
-
     {ok, ProcessorReduce} = espresso:new(),
     {ok, ProcessorReduce} = espresso:add_source(espresso_source_file, #{path => SinkPath1}, ProcessorReduce),
     {ok, ProcessorReduce} = espresso:add_source(espresso_source_file, #{path => SinkPath2}, ProcessorReduce),
@@ -159,19 +157,13 @@ file_source_file_sink_map_reduce_execute_test() ->
 					end, ProcessorReduce),
     ok = espresso:execute(ProcessorReduce),
 
-    timer:sleep(1000), % @TODO: fix it!
+    timer:sleep(1000),
 
-    {ok, SinkResult1} = file:read_file(SinkPath1),
-    {ok, SinkResult2} = file:read_file(SinkPath2),
-    {ok, SinkResult3} = file:read_file(SinkPath3),
-    {ok, SinkResult4} = file:read_file(SinkPath4),
-
-    ExpectedMapResult = <<"15\n14\n11\n6\n14\n11\n">>,
-    ?assert(ExpectedMapResult =:= SinkResult1),
-    ?assert(ExpectedMapResult =:= SinkResult2),
+    {ok, ReduceResult1} = file:read_file(SinkPath3),
+    {ok, ReduceResult2} = file:read_file(SinkPath4),
 
     ExpectedReduceResult = <<"142\n">>,
-    ?assert(ExpectedReduceResult =:= SinkResult3),
-    ?assert(ExpectedReduceResult =:= SinkResult4),
+    ?assert(ExpectedReduceResult =:= ReduceResult1),
+    ?assert(ExpectedReduceResult =:= ReduceResult2),
 
     ok.
