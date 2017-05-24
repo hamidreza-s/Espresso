@@ -195,9 +195,38 @@ Since the API is Elixir-friendly, you can use `|>` operator for writing processo
 ```elixir
 :espresso.new
          |> :espresso.add_source(:espresso_source_file, %{:path => "/path/to/source1"})
-	 |> :espresso.add_source(:espresso_source_file, %{:path => "/path/to/source2"})
-	 |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink1"})
-	 |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink2"})
-	 |> :espresso.map(fn(X) -> X end)
-	 |> :espresso.execute
+         |> :espresso.add_source(:espresso_source_file, %{:path => "/path/to/source2"})
+         |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink1"})
+         |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink2"})
+         |> :espresso.map(fn(X) -> X end)
+         |> :espresso.execute
 ```
+
+Todo list
+-----
+
+**Processors**:
+
+- [x] Map Processor
+- [x] Reduce Processor
+- [ ] Filter Processor
+- [ ] Aggregate Processor
+
+**Sources**:
+
+- [x] File Source
+- [x] Kafka Source
+- [ ] Socket Source
+- [ ] RabbitMQ Source
+
+**Sinks**:
+
+- [x] File Sink
+- [x] Kafka Sink
+- [ ] Socket Sink
+- [ ] RabbitMQ Sink
+
+**General**:
+
+- [x] Tests (Eunit, CT)
+- [x] Documentation
