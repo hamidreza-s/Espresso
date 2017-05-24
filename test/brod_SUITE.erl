@@ -6,7 +6,7 @@
 -include_lib("common_test/include/ct.hrl").
 
 suite() ->
-    [{timetrap,{seconds,30}}].
+    [{timetrap, {seconds, 30}}].
 
 init_per_suite(Config) ->
 

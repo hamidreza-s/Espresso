@@ -11,7 +11,6 @@
 
 -spec run(map(), espresso_processor()) -> ok.
 run(Opts, Processor) ->
-
     Topic = maps:get(topic, Opts),
     Partitions = maps:get(partitions, Opts, 0),
     Brokers = maps:get(brokers, Opts, [{"localhost", 9092}]),
