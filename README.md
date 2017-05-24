@@ -8,6 +8,10 @@ What is Espresso
 
 To put it shortly, it is something like [Apache Flink]() or [Apache Kafka Stream API]() but in Erlang/Elixir.
 
+Name origin
+-----
+The `e`, `s`, and `p` letters of Epresso stand for `Erlang/Elixir`, `Stream`, and `Processing` respectively, and `resso` stands for nothing :)
+
 What it does
 -----
 
@@ -18,11 +22,11 @@ Concepts
 
 The concepts are similar to other steam processing libraries. They are as follows:
 
-- **Source**: The input stream which can be any of Unix file, Unix socket, Kafka topic, RabbitMQ queue, and etc.
-- **Sink**: The output stream which can be any of Unix file, Unix socket, Kafka topic, RabbitMQ queue, and etc.
+- **Source**: The input stream which can be any of *Unix file*, *Unix socket*, *Kafka topic*, *RabbitMQ queue*, and etc.
+- **Sink**: The output stream which can be any of *Unix file*, *Unix socket*, *Kafka topic*, *RabbitMQ queue*, and etc.
 - **Processor**: The processing action on the elements of a stream, such as `Map`, `reduce`, `filter`, `aggregate`, and etc.
 
-How to implement a new source
+How to implement a new Source
 -----
 
 The `espresso_source.erl` is the behaviour for writing new sources with the following callback:
@@ -57,10 +61,10 @@ do_run(File, Processor) ->
     end.
 ```
 
-How to implement a new sink
+How to implement a new Sink
 -----
 
-The `espresso_source.erlq is the behaviour for writing new sinks with the following callbacks:
+The `espresso_source.erl` is the behaviour for writing new sinks with the following callbacks:
 
 ```erlang
 -callback run(Opts :: map(), Processor :: espresso_processor()) -> ok.
@@ -75,6 +79,7 @@ Again, implementing a Unix file sink is as simple as follows:
 -behaviour(espresso_sink).
 
 -export([run/2]).
+-export([write/3]).
 
 -spec run(map(), espresso_processor()) -> ok.
 run(Opts, Processor) ->
