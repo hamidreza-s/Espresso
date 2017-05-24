@@ -167,6 +167,7 @@ ok = espresso:chain(Source, Processors, Sink),
 ```
 
 - A MapReduce from file to kafka:
+
 ```erlang
 %% define file source
 Source = {espresso_source_file, #{path => "/path/to/source/file"}},
@@ -184,4 +185,19 @@ Processors = [{map, fun(X) -> ByteSize = byte_size(X), integer_to_binary(ByteSiz
 
 %% execute them on a chain of processors
 ok = espresso:chain(Source, Processors, Sink),
+```
+
+It is Elixir-friendly
+-----
+
+Since the API is Elixir-friendly, you can use `|>` operator for writing processors simpler:
+
+```elixir
+:espresso.new
+         |> :espresso.add_source(:espresso_source_file, %{:path => "/path/to/source1"})
+	 |> :espresso.add_source(:espresso_source_file, %{:path => "/path/to/source2"})
+	 |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink1"})
+	 |> :espresso.add_sink(:espresso_sink_file, %{:path => "/path/to/sink2"})
+	 |> :espresso.map(fn(X) -> X end)
+	 |> :espresso.execute
 ```
