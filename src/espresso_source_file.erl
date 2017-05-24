@@ -4,6 +4,7 @@
 -export([run/2]).
 
 -include("espresso.hrl").
+-include_lib("eunit/include/eunit.hrl").
 
 -spec run(map(), espresso_processor()) -> ok.
 run(Opts, Processor) ->
