@@ -1,10 +1,9 @@
--module(common_SUITE).
+-module(brod_SUITE).
 
 -compile(export_all).
 
+-include("espresso.hrl").
 -include_lib("common_test/include/ct.hrl").
-
--define(LOG(Format, Args), ct:print(default, ?STD_IMPORTANCE, Format, Args)).
 
 suite() ->
     [{timetrap,{seconds,30}}].
@@ -51,7 +50,7 @@ test_producer(_Config) ->
     ok = brod:start_producer(Client, Topic, ProducerConfig),
 
     lists:foreach(fun(_) ->
-			  ok = brod:produce_sync(Client, Topic, Partition, <<"key">>, integer_to_binary(erlang:system_time()))
+			  ok = brod:produce_sync(Client, Topic, Partition, <<>>, integer_to_binary(erlang:system_time()))
 		  end,
 		  lists:seq(1, 2)),
 
@@ -93,4 +92,4 @@ broker_list() ->
     [{"kafka00.tc3", 80}, {"kafka01.tc3", 80}, {"kafka02", 80}].
 
 topic_name() ->
-    <<"my-replicated-topic">>.
+    <<"espresso-ct-source-1">>.

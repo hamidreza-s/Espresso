@@ -88,6 +88,30 @@ reduce(Fun, Processor) ->
 %%% Unit tests
 %%%===================================================================
 
+kafka_source_file_sink_map_execute_test() ->
+
+    {ok, _} = application:ensure_all_started(brod),
+
+    BrokerList = [{"kafka00.tc3", 80}, {"kafka01.tc3", 80}, {"kafka02", 80}],
+    SourceTopic =  <<"espresso-ct-source-1">>,
+    SinkPath =  <<"/tmp/espresso.test.kafka.map.sink.1">>,
+    SourcePartition = 0,
+
+    SourceOpts = #{topic => SourceTopic,
+		   partitions => [SourcePartition],
+		   brokers => BrokerList,
+		   config => [{begin_offset, earliest}]},
+
+    {ok, Processor} = espresso:new(),
+    {ok, Processor} = espresso:add_source(espresso_source_kafka, SourceOpts, Processor),
+    {ok, Processor} = espresso:add_sink(espresso_sink_file, #{path => SinkPath}, Processor),
+    {ok, Processor} = espresso:map(fun(X) -> X end, Processor),
+
+    ok = espresso:execute(Processor),
+
+    timer:sleep(2000),
+
+    ok.
 
 file_source_file_sink_map_reduce_chain_test() ->
 

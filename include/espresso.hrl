@@ -29,3 +29,9 @@
 				| reduce
 				| filter
 				| aggregate.
+
+-ifdef(TEST).
+-define(LOG(Format, Args), ct:print(default, 50, Format, Args)).
+-else.
+-define(LOG(Format, Args), error_logger:info_msg(Format, Args)).
+-endif.
