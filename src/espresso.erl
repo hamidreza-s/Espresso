@@ -94,7 +94,11 @@ file_source_file_sink_map_reduce_chain_test() ->
     SourcePath = "/tmp/espresso.test.map.reduce.source.chain",
     SinkPath = "/tmp/espresso.test.map.reduce.sink.chain",
 
+    _ = file:delete(SourcePath),
+
     ok = file:write_file(SourcePath, <<"Lorem ipsum\ndolor sit amet\nconsectetur">>),
+
+    timer:sleep(1000),
 
     ok = espresso:chain({espresso_source_file, #{path => SourcePath}},
 			[
@@ -107,6 +111,8 @@ file_source_file_sink_map_reduce_chain_test() ->
 				  end}
 			],
 			{espresso_sink_file, #{path => SinkPath}}),
+
+    timer:sleep(1000), %% @TODO: fix it!
 
     {ok, SinkResult} = file:read_file(SinkPath),
     ExpectedResult = <<"36\n">>,
@@ -122,6 +128,9 @@ file_source_file_sink_map_reduce_execute_test() ->
     SinkPath2 = "/tmp/espresso.test.map.sink.2",
     SinkPath3 = "/tmp/espresso.test.reduce.sink.1",
     SinkPath4 = "/tmp/espresso.test.reduce.sink.2",
+
+    _ = file:delete(SourcePath1),
+    _ = file:delete(SourcePath2),
 
     ok = file:write_file(SourcePath1, <<"Lorem ipsum\ndolor sit amet\nconsectetur">>),
     ok = file:write_file(SourcePath2, <<"adipiscing elit\nsed do eiusmod\ntempor">>),
