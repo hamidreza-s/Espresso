@@ -6,11 +6,12 @@ An Erlang/Elixir Stream Processing Library.
 What is Espresso
 -----
 
-To put it shortly, it is something like [Apache Flink]() or [Apache Kafka Stream API]() but in Erlang/Elixir.
+To put it shortly, it is something like [Apache Flink](https://flink.apache.org) or
+[Apache Kafka Stream API](https://kafka.apache.org/documentation/streams) but in Erlang/Elixir.
 
 Name origin
 -----
-The `e`, `s`, and `p` letters of Epresso stand for `Erlang/Elixir`, `Stream`, and `Processing` respectively, and `resso` stands for nothing :)
+The `e`, `s`, and `p` letters of Espresso stand for `Erlang/Elixir`, `Stream`, and `Processing` respectively, and `resso` stands for nothing :)
 
 What it does
 -----
